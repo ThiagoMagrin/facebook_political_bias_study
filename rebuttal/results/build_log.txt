@@ -1,0 +1,24 @@
+[1] deduplicated posts (paper Table 1, step 2): 25473
+[2] after joining news text (join drops nothing; nulls removed at step 3): 25473
+[3] after listwise deletion (paper Table 1, step 3): 17973  (-7500)
+      no scraped article text (link_text null)                         4975
+      no link bias score (rph_link null)                               37
+      zero Like+Love+Sad+Angry -> CI undefined                         2968
+      no other post shares the link -> leave-one-out RS undefined      503
+      other posts on the link drew no valence reaction -> RS undefined 46
+      (conditions overlap, so they do not sum to the total removed)
+[3b] step-3 frame with the >= 50 reactions cut ALONE: 6983
+[4] after excluding the five hand-listed domains: 11424
+[5] final analytical sample (paper Table 1, step 4): 4584
+      of the 6983 posts the >= 50 cut alone leaves, the domain exclusion removes 2399
+[6] rph_delta quartile cut points: [0.1608, 0.3126, 0.498]
+
+--- reproduction check against data/data_final.csv ---
+reference rows: 4584 | rebuilt rows: 4584
+  rows match as a multiset over all 25 shared columns
+  4 text columns identical after row alignment
+  21 numeric columns agree to max |diff| = 0.00e+00
+  n publishers  reference=1243 rebuilt=1243
+  n content     reference=761 rebuilt=761
+
+written: /home/th/Dev/facebook_political_bias_study/rebuttal/data/analysis_dataset.csv  (4584 rows)

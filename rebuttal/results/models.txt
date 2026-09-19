@@ -1,0 +1,232 @@
+==============================================================================
+  MODEL FIT COMPARISON
+==============================================================================
+ model n_obs npar    AIC    BIC logLik R2_marginal R2_conditional converged
+    A0  4584   16 -14989 -14841 7517.7     0.74156        0.97774      TRUE
+    A1  4584   17 -15018 -14864 7533.2     0.75106        0.97689      TRUE
+    A2  4584   17 -15001 -14847 7524.5     0.75167        0.97708      TRUE
+    A3  4584   18 -15026 -14865 7538.0     0.75952        0.97654      TRUE
+    A4  4584   17 -14597 -14443 7322.6     0.12149        0.97840      TRUE
+    A5  4213   18 -13739 -13581 6894.7     0.75816        0.97849      TRUE
+    B1  4584   18 -15015 -14854 7532.3     0.74380        0.97754      TRUE
+    B2  4584   18 -14999 -14838 7524.4     0.73908        0.97762      TRUE
+     C  4584   20 -15046 -14873 7550.1     0.76184        0.97672      TRUE
+
+
+==============================================================================
+  A0 AGAINST THE PUBLISHED TABLE 3
+==============================================================================
+
+A0 estimates and CIs rounded to the three decimals the paper prints.
+A disagreeing row is an erratum in the printed table: the original model
+code, refitted unchanged on data_final.csv, returns the A0 column --
+max |A0 - original code| over all 16 coefficients = 0.000e+00
+
+           term estimate pub_estimate d_estimate conf.low pub_conf.low
+    (Intercept)    1.645        1.645      0.000    1.575        1.575
+       rph_link    0.095        0.095      0.000    0.032        0.032
+       rph_user    0.073        0.073      0.000    0.018        0.018
+      rph_delta   -0.158       -0.158      0.000   -0.195       -0.195
+       toxicity   -0.151       -0.151      0.000   -0.199       -0.199
+ reaction_score    0.968        0.966      0.002    0.906        0.904
+        Economy    0.034        0.034      0.000   -0.045       -0.045
+      Education    0.119        0.119      0.000    0.039        0.039
+         Health   -0.106       -0.106      0.000   -0.200       -0.200
+       Security    0.073        0.073      0.000   -0.028       -0.028
+        Culture   -0.102       -0.102      0.000   -0.211       -0.211
+       Religion   -0.016       -0.016      0.000   -0.097       -0.097
+ Disinformation   -0.077       -0.077      0.000   -0.170       -0.170
+       Election   -0.016       -0.016      0.000   -0.115       -0.115
+       Politics    0.102        0.102      0.000   -0.009        0.009
+     Corruption   -0.002        0.002     -0.004   -0.106       -0.106
+ conf.high pub_conf.high agrees
+     1.715         1.715   TRUE
+     0.157         0.157   TRUE
+     0.128         0.128   TRUE
+    -0.120        -0.120   TRUE
+    -0.103        -0.103   TRUE
+     1.030         1.029  FALSE
+     0.114         0.114   TRUE
+     0.200         0.200   TRUE
+    -0.013        -0.013   TRUE
+     0.174         0.174   TRUE
+     0.007         0.007   TRUE
+     0.064         0.064   TRUE
+     0.017         0.017   TRUE
+     0.082         0.082   TRUE
+     0.213         0.213  FALSE
+     0.102         0.102  FALSE
+
+13 of 16 rows agree on the estimate and both CI bounds.
+
+
+==============================================================================
+  BLOCK A - does the published result survive the two new controls?
+==============================================================================
+                term        A0        A1        A2        A3        A4
+            rph_link  +0.095**  +0.094**  +0.098**  +0.097** +0.206***
+            rph_user  +0.073**   +0.070*   +0.069*   +0.067*  +0.084**
+           rph_delta -0.158*** -0.154*** -0.161*** -0.157*** -0.158***
+            toxicity -0.151*** -0.150*** -0.151*** -0.153*** -0.136***
+      reaction_score +0.968*** +0.960*** +0.967*** +0.961***      <NA>
+ log_total_reactions      <NA> -0.129***      <NA> -0.119*** -0.142***
+    log_author_links      <NA>      <NA> -0.111***  -0.089**  -0.075**
+        A5
+ +0.108***
+  +0.079**
+ -0.189***
+ -0.166***
+ +0.956***
+ -0.116***
+ -0.162***
+
+signif: *** p<.001  ** p<.01  * p<.05  . p<.10 ; all predictors standardised
+
+-- change in the key coefficients, A0 -> A3 --
+           term       A0       A3 abs_change pct_change
+       rph_link  0.09455  0.09719  0.0026445     2.7970
+       rph_user  0.07315  0.06684 -0.0063056    -8.6201
+      rph_delta -0.15765 -0.15728  0.0003665     0.2325
+       toxicity -0.15072 -0.15281 -0.0020980    -1.3920
+ reaction_score  0.96779  0.96057 -0.0072119    -0.7452
+
+
+==============================================================================
+  BLOCK B - leaning vs extremity, and the categorical specification
+==============================================================================
+
+-- B1: bias split into signed leaning and absolute extremity --
+                term estimate std.error  conf.low conf.high    p.value
+         (Intercept)  1.62213   0.03576  1.552042   1.69221  0.000e+00
+     content_leaning  0.15359   0.03954  0.076100   0.23108  1.024e-04
+   content_extremity  0.06564   0.03583 -0.004585   0.13586  6.695e-02
+   publisher_leaning  0.11047   0.02926  0.053131   0.16781  1.593e-04
+ publisher_extremity  0.13494   0.02848  0.079115   0.19076  2.160e-06
+           rph_delta -0.17719   0.01971 -0.215817  -0.13857  2.444e-19
+            toxicity -0.14412   0.02441 -0.191964  -0.09628  3.538e-09
+      reaction_score  0.95719   0.03171  0.895038   1.01933 3.494e-200
+
+-- B2: categorical Left / Center / Right (Center = reference) --
+                term estimate std.error conf.low conf.high    p.value
+         (Intercept)   1.5158   0.06976  1.37907   1.65252 1.083e-104
+    content_sideLeft  -0.0468   0.06212 -0.16856   0.07496  4.513e-01
+   content_sideRight   0.2437   0.08401  0.07908   0.40837  3.716e-03
+  publisher_sideLeft   0.0740   0.07191 -0.06695   0.21494  3.035e-01
+ publisher_sideRight   0.3083   0.07887  0.15371   0.46287  9.269e-05
+           rph_delta  -0.1630   0.01926 -0.20078  -0.12529  2.561e-17
+            toxicity  -0.1461   0.02448 -0.19406  -0.09810  2.411e-09
+      reaction_score   0.9616   0.03184  0.89918   1.02400 2.462e-200
+
+-- model comparison A0 (linear bias) vs B1 (leaning+extremity) vs B2 (categorical) --
+ model n_obs npar      AIC      BIC  logLik R2_marginal R2_conditional
+    A0  4584   16 -14989.3 -14841.4 7517.66    0.741557       0.977745
+    B1  4584   18 -15014.6 -14853.8 7532.28    0.743804       0.977537
+    B2  4584   18 -14998.8 -14838.0 7524.38    0.739082       0.977615
+ converged
+      TRUE
+      TRUE
+      TRUE
+
+likelihood-ratio test, A0 nested in B1 (A0 adds the two extremity terms):
+Data: data
+Models:
+mA0: ci ~ rph_link + rph_user + rph_delta + toxicity + reaction_score + , zi=~0, disp=~1
+mA0:     Economy + Education + Health + Security + Culture + Religion + , zi=~0, disp=~1
+mA0:     Disinformation + Election + Politics + Corruption + (toxicity | , zi=~0, disp=~1
+mA0:     account_name) + (toxicity | collection_name), zi=~0, disp=~1
+mB1: ci ~ content_leaning + content_extremity + publisher_leaning + , zi=~0, disp=~1
+mB1:     publisher_extremity + rph_delta + toxicity + reaction_score + , zi=~0, disp=~1
+mB1:     Economy + Education + Health + Security + Culture + Religion + , zi=~0, disp=~1
+mB1:     Disinformation + Election + Politics + Corruption + (toxicity | , zi=~0, disp=~1
+mB1:     account_name) + (toxicity | collection_name), zi=~0, disp=~1
+    Df    AIC    BIC logLik deviance  Chisq Chi Df Pr(>Chisq)    
+mA0 23 -14989 -14841 7517.7   -15035                             
+mB1 25 -15015 -14854 7532.3   -15065 29.242      2  4.469e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+==============================================================================
+  FINAL MODEL (C)
+==============================================================================
+ Family: beta  ( logit )
+Formula:          
+ci ~ content_leaning + content_extremity + publisher_leaning +  
+    publisher_extremity + rph_delta + toxicity + reaction_score +  
+    log_total_reactions + log_author_links + Economy + Education +  
+    Health + Security + Culture + Religion + Disinformation +  
+    Election + Politics + Corruption + (toxicity | account_name) +  
+    (toxicity | collection_name)
+Data: data
+
+      AIC       BIC    logLik -2*log(L)  df.resid 
+ -15046.2  -14872.6    7550.1  -15100.2      4557 
+
+Random effects:
+
+Conditional model:
+ Groups          Name        Variance Std.Dev. Corr  
+ account_name    (Intercept) 0.08535  0.2922         
+                 toxicity    0.02371  0.1540   0.49  
+ collection_name (Intercept) 0.19106  0.4371         
+                 toxicity    0.02605  0.1614   -0.02 
+Number of obs: 4584, groups:  account_name, 1243; collection_name, 761
+
+Dispersion parameter for beta family (): 3.59 
+
+Conditional model:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)          1.53572    0.03657   41.99  < 2e-16 ***
+content_leaning      0.15819    0.03957    4.00 6.40e-05 ***
+content_extremity    0.07242    0.03594    2.02 0.043901 *  
+publisher_leaning    0.09912    0.02867    3.46 0.000546 ***
+publisher_extremity  0.11369    0.02786    4.08 4.48e-05 ***
+rph_delta           -0.17296    0.01959   -8.83  < 2e-16 ***
+toxicity            -0.14872    0.02405   -6.18 6.30e-10 ***
+reaction_score       0.95081    0.03184   29.87  < 2e-16 ***
+log_total_reactions -0.11515    0.02228   -5.17 2.37e-07 ***
+log_author_links    -0.07116    0.02779   -2.56 0.010462 *  
+Economy              0.03443    0.04067    0.85 0.397243    
+Education            0.11279    0.04117    2.74 0.006144 ** 
+Health              -0.09624    0.04781   -2.01 0.044108 *  
+Security             0.07903    0.05186    1.52 0.127541    
+Culture             -0.09302    0.05616   -1.66 0.097652 .  
+Religion            -0.01822    0.04119   -0.44 0.658184    
+Disinformation      -0.10050    0.04797   -2.10 0.036164 *  
+Election            -0.01078    0.05059   -0.21 0.831345    
+Politics             0.08527    0.05694    1.50 0.134298    
+Corruption           0.01749    0.05336    0.33 0.743086    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+-- collinearity of the final model --
+# Check for Multicollinearity
+
+Low Correlation
+
+                Term  VIF   VIF 95% CI adj. VIF Tolerance Tolerance 95% CI
+     content_leaning 2.06 [1.97, 2.15]     1.44      0.49     [0.46, 0.51]
+   content_extremity 1.83 [1.75, 1.91]     1.35      0.55     [0.52, 0.57]
+   publisher_leaning 1.41 [1.36, 1.47]     1.19      0.71     [0.68, 0.74]
+ publisher_extremity 1.30 [1.26, 1.35]     1.14      0.77     [0.74, 0.80]
+           rph_delta 1.14 [1.10, 1.18]     1.07      0.88     [0.85, 0.91]
+            toxicity 1.02 [1.00, 1.10]     1.01      0.98     [0.91, 1.00]
+      reaction_score 1.09 [1.06, 1.13]     1.04      0.92     [0.88, 0.94]
+ log_total_reactions 1.05 [1.03, 1.09]     1.02      0.95     [0.91, 0.98]
+    log_author_links 1.07 [1.04, 1.11]     1.03      0.94     [0.90, 0.96]
+             Economy 2.54 [2.43, 2.67]     1.59      0.39     [0.38, 0.41]
+           Education 2.63 [2.51, 2.75]     1.62      0.38     [0.36, 0.40]
+              Health 3.26 [3.11, 3.43]     1.81      0.31     [0.29, 0.32]
+            Security 3.94 [3.75, 4.15]     1.99      0.25     [0.24, 0.27]
+             Culture 4.73 [4.50, 4.98]     2.18      0.21     [0.20, 0.22]
+            Religion 2.61 [2.49, 2.73]     1.61      0.38     [0.37, 0.40]
+      Disinformation 3.44 [3.27, 3.61]     1.85      0.29     [0.28, 0.31]
+            Election 3.87 [3.68, 4.07]     1.97      0.26     [0.25, 0.27]
+            Politics 4.90 [4.65, 5.16]     2.21      0.20     [0.19, 0.22]
+          Corruption 4.36 [4.14, 4.59]     2.09      0.23     [0.22, 0.24]
+
+-- R2 --
+# R2 for Mixed Models
+
+  Conditional R2: 0.977
+     Marginal R2: 0.762

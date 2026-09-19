@@ -1,0 +1,11 @@
+# Minimum distinct links in a publisher's sharing history, one per line.
+# Single source for the threshold ladder, read by both 07_bp_reliability.py
+# (Table 2.4, sample composition) and 08_threshold_models.R (Table 2.3, the
+# model re-fits). The two tables share column headers in the response document,
+# so they must describe the same subsets; hardcoding the ladder twice let them
+# drift apart silently.
+1
+2
+5
+10
+15

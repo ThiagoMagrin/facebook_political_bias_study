@@ -1,0 +1,87 @@
+==============================================================================
+  R2.8 - REACTION NEGATIVITY AS THE OUTCOME
+==============================================================================
+
+C  = Consensus Index (published outcome)
+D1 = reaction negativity of the target post
+D2 = D1 plus the leave-one-out content score
+D3 = reaction negativity, beta-binomial on raw counts
+
+NOTE: CI is high when reactions are homogeneous; negativity is high when they
+are hostile. Because CI = |1 - 2*f_neg|, a predictor that lowers consensus by
+raising negativity flips sign between the two columns. Signs are EXPECTED to
+be opposite.
+
+                term         C        D1        D2        D3
+     content_leaning +0.158*** -0.305*** -0.145*** -0.370***
+   content_extremity   +0.072* -0.189***   -0.088* -0.263***
+   publisher_leaning +0.099*** -0.127*** -0.118*** -0.181***
+ publisher_extremity +0.114***  -0.078**  -0.079** -0.115***
+           rph_delta -0.173*** +0.147*** +0.142*** +0.190***
+            toxicity -0.149*** +0.114*** +0.135*** +0.146***
+      reaction_score +0.951***      <NA> -0.757***      <NA>
+ log_total_reactions -0.115*** +0.098*** +0.085***   +0.036.
+    log_author_links   -0.071*    +0.043   +0.053*    +0.047
+
+signif: *** p<.001  ** p<.01  * p<.05  . p<.10
+
+ model             outcome        family       AIC     logLik converged
+     C     Consensus Index          beta -15046.17   7550.087      TRUE
+    D1 reaction negativity          beta -19304.52   9678.261      TRUE
+    D2 reaction negativity          beta -19618.07   9836.036      TRUE
+    D3 reaction negativity beta-binomial  37334.58 -18641.288      TRUE
+ R2_marginal R2_conditional
+  0.76183850      0.9767196
+  0.08833621      0.6028416
+  0.39473028      0.5556377
+  0.11024842      0.6918718
+
+AIC is comparable only within an outcome. C uses a different response
+variable from D1-D3, so C's AIC must not be compared with theirs.
+
+-- random-effect SDs --
+ model           group sd_intercept sd_toxicity
+     C    account_name       0.2921    0.153966
+     C collection_name       0.4371    0.161399
+    D1    account_name       0.3180    0.100662
+    D1 collection_name       0.9675    0.060038
+    D2    account_name       0.2931    0.107600
+    D2 collection_name       0.4546    0.127807
+    D3    account_name       0.4135    0.002339
+    D3 collection_name       1.0847    0.100239
+
+If the leave-one-out score were adding information beyond content identity,
+the content intercept SD would not change much when it is added. Compare
+D1 (no score) with D2 (score added).
+
+-- variance components at the zero boundary (|sd| < 0.01 ) --
+ model        group sd_intercept sd_toxicity
+    D3 account_name       0.4135    0.002339
+
+These fits converged with a positive-definite Hessian AND carry a variance
+component estimated at zero; the two are not in conflict. The fixed effects
+remain interpretable, but the random-effect structure is over-specified for
+this outcome and the corresponding random slope should not be interpreted.
+
+
+-- D1 in full --
+                term estimate std.error  conf.low conf.high   p.value
+         (Intercept) -2.57194   0.05043 -2.670773 -2.473099 0.000e+00
+     content_leaning -0.30466   0.05766 -0.417677 -0.191647 1.267e-07
+   content_extremity -0.18921   0.05465 -0.296316 -0.082108 5.351e-04
+   publisher_leaning -0.12738   0.02785 -0.181956 -0.072802 4.775e-06
+ publisher_extremity -0.07837   0.02607 -0.129467 -0.027281 2.643e-03
+           rph_delta  0.14735   0.01769  0.112673  0.182024 8.186e-17
+            toxicity  0.11396   0.01951  0.075725  0.152199 5.173e-09
+ log_total_reactions  0.09811   0.01987  0.059159  0.137053 7.933e-07
+    log_author_links  0.04308   0.02621 -0.008289  0.094444 1.002e-01
+             Economy -0.11125   0.06105 -0.230905  0.008413 6.843e-02
+           Education -0.09944   0.06335 -0.223610  0.024729 1.165e-01
+              Health  0.12670   0.07668 -0.023592  0.276989 9.847e-02
+            Security -0.02789   0.07992 -0.184539  0.128758 7.271e-01
+             Culture  0.02190   0.08650 -0.147646  0.191446 8.001e-01
+            Religion  0.05525   0.06607 -0.074233  0.184740 4.030e-01
+      Disinformation  0.22989   0.07199  0.088793  0.370978 1.406e-03
+            Election -0.15279   0.07638 -0.302494 -0.003086 4.546e-02
+            Politics  0.01806   0.08661 -0.151688  0.187799 8.349e-01
+          Corruption -0.08476   0.08103 -0.243571  0.074048 2.955e-01

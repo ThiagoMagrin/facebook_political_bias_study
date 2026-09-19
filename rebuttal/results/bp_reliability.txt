@@ -1,0 +1,111 @@
+==============================================================================
+b_p RELIABILITY: leave-one-post-out stability by size of sharing history
+==============================================================================
+
+If b_p is a stable property of a publisher, removing one of its posts should
+barely move it. If the history is short, it moves a lot.
+
+r is scale-free and flatters short histories: at 2 links r = 0.85 while the
+mean shift is 0.29 on a b_p scale that spans [-1, +1]. Read both columns.
+
+history (links)     posts   r(full, LOO)   mean |shift|  median |shift|
+1                     371     degenerate              -               -
+2                     297          0.851          0.289           0.077
+3-5                   692          0.953          0.133           0.054
+6-10                  614          0.988          0.064           0.037
+11-20                 595          0.996          0.029           0.019
+21-50                 797          0.999          0.014           0.011
+51+                  1218          1.000          0.003           0.003
+
+overall r(full, LOO) = 0.967 over 4230 posts
+
+-- what the single-link publishers look like --
+   posts 371; their b_p takes only the values -1, 0, 1
+   They are excluded from the table above. For the 354 that posted their
+   one link once, leave-one-post-out is undefined - nothing remains. For the
+   17 that posted it more than once, dropping a post leaves the same
+   single category, so the score trivially does not move; that stability is an
+   artefact of the degeneracy, not evidence of reliability. With one distinct
+   link b_p is not an estimate, it is a label forced by a single observation.
+
+==============================================================================
+SAMPLE REMAINING AT EACH HISTORY THRESHOLD
+==============================================================================
+
+The threshold is applied to author_links_history (every distinct link the
+publisher shared). The last column counts publishers admitted by that cut
+whose b_p in fact rests on fewer links, because some of the links they
+shared carry no bias score.
+
+threshold                posts   publishers   content         b_p under cut
+>= 1 links                4584         1243       761                     0
+>= 2 links                4213          879       757                     0
+>= 5 links                3412          418       744           3 (7 posts)
+>= 10 links               2727          204       726                     0
+>= 15 links               2240          117       702                     0
+   at >= 5: b_p there rests on 4 scored link(s), not 5
+
+
+==============================================================================
+WHAT THE THRESHOLD ACTUALLY SELECTS (Table 2.4)
+==============================================================================
+
+Requiring a longer sharing history does not only reduce noise in b_p; it
+also selects larger, more institutional publishers. If it were a clean
+measurement-error correction, the sample composition would not move.
+
+Publisher-level quantities are computed over DISTINCT PUBLISHERS, not over
+posts. Weighting publisher attributes by post count lets one high-volume page
+enter the average dozens of times and reverses the centrist trend, so both
+weightings are reported.
+
+threshold    posts  pubs  med react  subs/post  subs/pub  mean tox  ctr/post  ctr/pub
+>= 1          4584  1243        290     149672     45077    0.1260     23.3%    19.5%
+>= 2          4213   879        313     164399     47877    0.1257     22.9%    15.6%
+>= 5          3412   418        398     199097     55274    0.1225     25.1%    15.1%
+>= 10         2727   204        511     309585     78230    0.1115     28.2%    12.7%
+>= 15         2240   117        611     413297     78168    0.1055     32.8%    15.4%
+
+full sample -> >= 15 links:
+   median reactions per post      290 -> 611   (2.1x)
+   median subscribers, per POST   149672 -> 413297   (2.8x)
+   median subscribers, per PUBLISHER 45077 -> 78168   (1.7x)
+   mean toxicity                  0.1260 -> 0.1055   (-16%)
+   centrist share, per POST       23.3% -> 32.8%   (RISES)
+   centrist share, per PUBLISHER  19.5% -> 15.4%   (FALLS)
+
+The two weightings disagree on direction. Restricting keeps a few very
+high-volume centrist outlets whose posts dominate the post-weighted share,
+while removing proportionally more centrist publishers than partisan ones.
+What both agree on is that the surviving sample is larger and less toxic,
+i.e. a different population rather than the same one measured better.
+
+-- predictor SDs by subset (each model standardises within its own subset) --
+Every predictor reported in Table 2.3 is listed, not only the stable ones:
+threshold        content_leaning   content_extremity   publisher_leaning  publisher_extremit           rph_delta            toxicity      reaction_score  log_total_reaction    log_author_links
+>= 1                      0.4315              0.2347              0.5992              0.3346              0.2691              0.1571              0.1600              1.5867              1.6871
+>= 2                      0.4274              0.2332              0.5827              0.3198              0.2755              0.1578              0.1584              1.6081              1.5315
+>= 5                      0.4197              0.2328              0.5389              0.3142              0.2745              0.1575              0.1595              1.6537              1.3036
+>= 10                     0.4124              0.2297              0.5181              0.3205              0.2714              0.1518              0.1576              1.6997              1.1305
+>= 15                     0.4128              0.2271              0.5092              0.3256              0.2750              0.1488              0.1564              1.7383              0.9959
+
+-- ratio of each SD at >= 15 links to the full sample --
+   log_author_links       0.590  <-- NOT comparable across columns
+   publisher_leaning      0.850  <-- NOT comparable across columns
+   toxicity               0.948
+   content_leaning        0.957
+   content_extremity      0.968
+   publisher_extremity    0.973
+   reaction_score         0.978
+   rph_delta              1.022
+   log_total_reactions    1.096
+
+Seven of the nine predictors keep their scale to within 10%, so their
+standardised coefficients in Table 2.3 are comparable across columns.
+Two are not:
+  log_author_links  SD falls 41% - the subsets are defined BY this variable,
+                    so its coefficient must be read in raw units and the sign
+                    change across Table 2.3 is not an effect change.
+  publisher_leaning SD falls 15% - its standardised rise across Table 2.3
+                    understates the raw one (+0.165 -> +0.287 per unit), so
+                    the direction holds but the magnitude is not comparable.

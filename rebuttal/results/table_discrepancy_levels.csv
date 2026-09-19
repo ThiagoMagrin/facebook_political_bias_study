@@ -1,0 +1,5 @@
+level,n_posts,pct_posts,delta_min,delta_max,delta_mean,n_authors,n_content,posts_per_author_median,posts_per_author_max,top1_author_pct,top5_authors_pct,top10_authors_pct,top10pct_authors_pct,gini_authors,hhi_authors,eff_n_authors,single_link_author_posts,mean_CI,mean_toxicity,top_author
+Very Low,1148,25.04,0.0,0.161,0.077,427,361,1.0,51,4.44,16.11,23.26,45.3,0.512,0.0093,107.0,55,0.732,0.1258,UOL
+Low,1148,25.04,0.161,0.313,0.233,554,419,1.0,77,6.71,18.64,24.13,44.86,0.455,0.0119,84.0,146,0.794,0.1196,UOL
+High,1142,24.91,0.313,0.498,0.403,499,375,1.0,91,7.97,21.19,26.97,46.85,0.488,0.0156,64.0,98,0.8,0.1155,UOL Notícias
+Very High,1146,25.0,0.499,1.746,0.726,595,374,1.0,45,3.93,13.79,19.11,40.23,0.414,0.0066,151.2,72,0.733,0.1433,UOL

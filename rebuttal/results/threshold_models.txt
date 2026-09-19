@@ -1,0 +1,41 @@
+==============================================================================
+  FINAL MODEL RE-FITTED BY MINIMUM SHARING HISTORY
+==============================================================================
+
+Columns are the minimum number of distinct links a publisher must have
+shared for its posts to enter the fit.
+
+                term       >=1       >=2       >=5      >=10      >=15
+     content_leaning +0.158*** +0.151*** +0.140*** +0.138***  +0.131**
+   content_extremity   +0.072*    +0.057    +0.039    +0.058    +0.042
+   publisher_leaning +0.099*** +0.104*** +0.132***  +0.122**  +0.146**
+ publisher_extremity +0.114***  +0.090** +0.133*** +0.201*** +0.293***
+           rph_delta -0.173*** -0.201*** -0.218*** -0.212*** -0.223***
+            toxicity -0.149*** -0.162*** -0.169*** -0.192*** -0.170***
+      reaction_score +0.951*** +0.940*** +0.975*** +0.947*** +0.958***
+ log_total_reactions -0.115*** -0.113*** -0.094***   -0.067*   -0.058.
+    log_author_links   -0.071* -0.130***  -0.114**    -0.045    +0.048
+
+signif: *** p<.001  ** p<.01  * p<.05  . p<.10 ; predictors standardised within each subset
+
+-- the same coefficients in RAW units (estimate / SD within the subset) --
+Read these where the standardised columns are not comparable, i.e. where the
+predictor's SD moves across subsets (log_author_links, publisher_leaning).
+
+                term    >=1    >=2    >=5   >=10   >=15
+     content_leaning +0.367 +0.352 +0.334 +0.335 +0.317
+   content_extremity +0.309 +0.245 +0.168 +0.251 +0.185
+   publisher_leaning +0.165 +0.179 +0.245 +0.235 +0.287
+ publisher_extremity +0.340 +0.281 +0.422 +0.627 +0.899
+           rph_delta -0.643 -0.728 -0.796 -0.780 -0.810
+            toxicity -0.947 -1.028 -1.072 -1.263 -1.144
+      reaction_score +5.943 +5.934 +6.116 +6.012 +6.124
+ log_total_reactions -0.073 -0.071 -0.057 -0.040 -0.033
+    log_author_links -0.042 -0.085 -0.088 -0.040 +0.048
+
+ threshold n_obs n_publishers converged R2_marginal
+         1  4584         1243      TRUE      0.7618
+         2  4213          879      TRUE      0.7606
+         5  3412          418      TRUE      0.7758
+        10  2727          204      TRUE      0.7793
+        15  2240          117      TRUE      0.8107

@@ -1,0 +1,337 @@
+==============================================================================
+ANALYTICAL SAMPLE
+==============================================================================
+posts        : 4584
+publishers   : 1243
+content items: 761
+
+==============================================================================
+Q1b - COMPOSITION OF REACTIONS
+==============================================================================
+
+-- share of every reaction actually cast in the corpus (n = 7,815,629) --
+   like        5,064,293   64.80%
+   haha        1,324,782   16.95%
+   love          563,639    7.21%
+   angry         428,844    5.49%
+   sad           359,031    4.59%
+   wow            75,025    0.96%
+   care               15    0.00%
+   thankful            0    0.00%
+
+   Like alone accounts for 64.80% of all reactions cast.
+   Valence-bearing reactions used by the metrics (Like+Love+Sad+Angry): 82.09%
+
+-- per-post composition over the valence set (Like+Love vs Sad+Angry) --
+   all-positive (zero Sad+Angry)      : 953 (20.79%)
+   mixed (both signs present)         : 3631 (79.21%)
+   all-negative (zero Like+Love)      : 0 (0.00%)
+   containing at least one negative   : 3631 (79.21%)
+   majority-negative (share > 0.50)   : 237 (5.17%)
+
+-- distribution of the negative share f_neg = (Sad+Angry)/(Like+Love+Sad+Angry) --
+   mean 0.1300 | median 0.0429 | sd 0.1738
+   p10  0.0000
+   p25  0.0029
+   p50  0.0429
+   p75  0.2038
+   p90  0.3985
+   p95  0.5062
+   p99  0.7019
+   posts with f_neg <= 0.0  : 953 (20.79%)
+   posts with f_neg <= 0.01 : 1474 (32.16%)
+   posts with f_neg <= 0.05 : 2396 (52.27%)
+   posts with f_neg <= 0.1  : 2822 (61.56%)
+   posts with f_neg <= 0.25 : 3651 (79.65%)
+   posts with f_neg <= 0.5  : 4347 (94.83%)
+
+-- per-post share of Like over ALL reactions received --
+   mean 0.7015 | median 0.7323
+   posts where Like is the modal reaction: 4121 (89.90%)
+
+-- arithmetic relation between negativity and the Consensus Index --
+   CI_i == |1 - 2 * f_neg,i| holds exactly (max |deviation| = 1.11e-16)
+   for the 94.83% of posts with f_neg <= 0.5 this reduces to CI = 1 - 2*f_neg,
+   i.e. CI is a strictly decreasing LINEAR function of the post's own negativity.
+   Spearman(CI, f_neg) = -0.9951
+   Pearson (CI, f_neg) = -0.9274
+   => at the level of a single post, 'negativity' and 'heterogeneity' are the
+      same quantity measured twice. The reviewer's concern is correct here.
+
+-- how often the fold in CI = |1 - 2*f_neg| engages --
+   f_neg > 0.5 : 237 (5.17%)
+   f_neg > 0.7 : 47 (1.03%)
+   f_neg > 0.9 : 4 (0.09%)
+   majority-negative AND CI > 0.5: 19 (0.41%)
+   maximum observed f_neg = 0.959
+   Pearson(CI, 1 - 2*f_neg) over the whole sample = +0.927
+   below the fold (f_neg <= 0.5) Pearson(CI, f_neg) = -1.000
+
+-- but the model's predictor is the LEAVE-ONE-OUT content-level score RS --
+   RS is computed from the OTHER posts sharing the same link; 1-RS is the
+   negative share of those other posts.
+   Pearson (CI, RS)                 = 0.7457
+   Pearson (f_neg_own, f_neg_others)= 0.7815
+   Spearman(f_neg_own, f_neg_others)= 0.7185
+   The CI-RS association is therefore NOT definitional: it is the empirical
+   fact that the same news item draws a similar reaction mix from different
+   audiences. Its size is bounded by that content-level reproducibility.
+
+-- how often is RS really 'a different audience'? --
+   (measured on the pre-deletion frame RS is computed over, not on the 4,584)
+   (content, publisher) pairs contributing more than one post to an RS : 403
+   posts whose RS includes another post by the SAME publisher: 720 (15.71%)
+   posts whose RS comes ENTIRELY from the same publisher     : 60 (1.31%)
+   RS is leave-one-POST-out over the content item, not leave-one-PUBLISHER-out.
+   The 'different audience' reading therefore holds for 84.3% of the sample, not all of it. For the rest
+   part of RS is the same page's own audience reacting to the same link, so
+   the reviewer's definitional-artefact concern is only partly answered there.
+
+   ICC of f_neg across content items (one-way ANOVA) = 0.701
+   -> 70.1% of the variance in a post's negativity is attributable to
+      which news item is being shared, which is what RS picks up.
+
+   ICC of RS across content items (one-way ANOVA) = 0.974
+   -> RS is very nearly one constant per link, which is what the content
+      random intercept already absorbs.
+
+-- the association survives inside the mixed-reaction subsample --
+   mixed posts n = 3631
+   Pearson (CI, RS) among mixed posts  = 0.7326
+   Spearman(CI, RS) among mixed posts  = 0.7457
+   Among all-positive posts CI is constant at 1.00, so they carry no
+   information about the CI-RS slope; the association is estimated entirely
+   on the mixed posts.
+
+==============================================================================
+Q3 - DISTRIBUTION OF IDEOLOGICAL DISCREPANCY
+==============================================================================
+
+quartile cut points of Delta_b: Q1=0.1608  Q2(median)=0.3126  Q3=0.4980  max=1.7459
+
+shape: (4, 9)
+┌───────────┬─────────┬───────────┬───────────┬───────────┬───────────┬───────────┬─────────────────────────┬──────────────────────┐
+│ level     ┆ n_posts ┆ pct_posts ┆ delta_min ┆ delta_max ┆ n_authors ┆ n_content ┆ posts_per_author_median ┆ posts_per_author_max │
+│ ---       ┆ ---     ┆ ---       ┆ ---       ┆ ---       ┆ ---       ┆ ---       ┆ ---                     ┆ ---                  │
+│ str       ┆ i64     ┆ f64       ┆ f64       ┆ f64       ┆ i64       ┆ i64       ┆ f64                     ┆ i64                  │
+╞═══════════╪═════════╪═══════════╪═══════════╪═══════════╪═══════════╪═══════════╪═════════════════════════╪══════════════════════╡
+│ Very Low  ┆ 1148    ┆ 25.04     ┆ 0.0       ┆ 0.161     ┆ 427       ┆ 361       ┆ 1.0                     ┆ 51                   │
+│ Low       ┆ 1148    ┆ 25.04     ┆ 0.161     ┆ 0.313     ┆ 554       ┆ 419       ┆ 1.0                     ┆ 77                   │
+│ High      ┆ 1142    ┆ 24.91     ┆ 0.313     ┆ 0.498     ┆ 499       ┆ 375       ┆ 1.0                     ┆ 91                   │
+│ Very High ┆ 1146    ┆ 25.0      ┆ 0.499     ┆ 1.746     ┆ 595       ┆ 374       ┆ 1.0                     ┆ 45                   │
+└───────────┴─────────┴───────────┴───────────┴───────────┴───────────┴───────────┴─────────────────────────┴──────────────────────┘
+shape: (4, 9)
+┌───────────┬─────────────────┬──────────────────┬───────────────────┬──────────────────────┬──────────────┬─────────────┬───────────────┬──────────────┐
+│ level     ┆ top1_author_pct ┆ top5_authors_pct ┆ top10_authors_pct ┆ top10pct_authors_pct ┆ gini_authors ┆ hhi_authors ┆ eff_n_authors ┆ top_author   │
+│ ---       ┆ ---             ┆ ---              ┆ ---               ┆ ---                  ┆ ---          ┆ ---         ┆ ---           ┆ ---          │
+│ str       ┆ f64             ┆ f64              ┆ f64               ┆ f64                  ┆ f64          ┆ f64         ┆ f64           ┆ str          │
+╞═══════════╪═════════════════╪══════════════════╪═══════════════════╪══════════════════════╪══════════════╪═════════════╪═══════════════╪══════════════╡
+│ Very Low  ┆ 4.44            ┆ 16.11            ┆ 23.26             ┆ 45.3                 ┆ 0.512        ┆ 0.0093      ┆ 107.0         ┆ UOL          │
+│ Low       ┆ 6.71            ┆ 18.64            ┆ 24.13             ┆ 44.86                ┆ 0.455        ┆ 0.0119      ┆ 84.0          ┆ UOL          │
+│ High      ┆ 7.97            ┆ 21.19            ┆ 26.97             ┆ 46.85                ┆ 0.488        ┆ 0.0156      ┆ 64.0          ┆ UOL Notícias │
+│ Very High ┆ 3.93            ┆ 13.79            ┆ 19.11             ┆ 40.23                ┆ 0.414        ┆ 0.0066      ┆ 151.2         ┆ UOL          │
+└───────────┴─────────────────┴──────────────────┴───────────────────┴──────────────────────┴──────────────┴─────────────┴───────────────┴──────────────┘
+
+-- how many discrepancy levels does a publisher appear in? --
+shape: (4, 2)
+┌────────┬───────┐
+│ levels ┆ count │
+│ ---    ┆ ---   │
+│ u32    ┆ u32   │
+╞════════╪═══════╡
+│ 1      ┆ 747   │
+│ 2      ┆ 262   │
+│ 3      ┆ 132   │
+│ 4      ┆ 102   │
+└────────┴───────┘
+   publishers present in all four levels: 102
+
+-- the ten publishers contributing most posts, by level --
+
+   [Very Low]
+      UOL                                                  51 posts (4.4%)
+      UOL Notícias                                         47 posts (4.1%)
+      Catraca Livre                                        34 posts (3.0%)
+      BBC News Brasil                                      27 posts (2.4%)
+      Terra                                                26 posts (2.3%)
+      Perolas dos Coxinhas                                 22 posts (1.9%)
+      Cartazes & Tirinhas LGBT                             17 posts (1.5%)
+      Time Ciro Gomes                                      15 posts (1.3%)
+      Brasil Contra Jair Bolsonaro                         14 posts (1.2%)
+      Mídia NINJA                                          14 posts (1.2%)
+
+   [Low]
+      UOL                                                  77 posts (6.7%)
+      UOL Notícias                                         72 posts (6.3%)
+      Terra                                                25 posts (2.2%)
+      BBC News Brasil                                      20 posts (1.7%)
+      Catraca Livre                                        20 posts (1.7%)
+      Perolas dos Coxinhas                                 18 posts (1.6%)
+      Na dúvida, siga à esquerda                           13 posts (1.1%)
+      Brasil Contra Jair Bolsonaro                         12 posts (1.0%)
+      A Gazeta Petista                                     10 posts (0.9%)
+      A Privataria Tucana                                  10 posts (0.9%)
+
+   [High]
+      UOL Notícias                                         91 posts (8.0%)
+      UOL                                                  85 posts (7.4%)
+      Terra                                                29 posts (2.5%)
+      Perolas dos Coxinhas                                 19 posts (1.7%)
+      Brasil Contra Jair Bolsonaro                         18 posts (1.6%)
+      BBC News Brasil                                      17 posts (1.5%)
+      A Privataria Tucana                                  13 posts (1.1%)
+      Todos contra a "globo" e todos a favor do Lula.      13 posts (1.1%)
+      Catraca Livre                                        12 posts (1.1%)
+      Bolsonaro Herói Nacional                             11 posts (1.0%)
+
+   [Very High]
+      UOL                                                  45 posts (3.9%)
+      UOL Notícias                                         42 posts (3.7%)
+      Catraca Livre                                        29 posts (2.5%)
+      Perolas dos Coxinhas                                 24 posts (2.1%)
+      BBC News Brasil                                      18 posts (1.6%)
+      GRUPO OLAVO DE CARVALHO                              13 posts (1.1%)
+      Terra                                                13 posts (1.1%)
+      Todos contra a "globo" e todos a favor do Lula.      12 posts (1.0%)
+      edita pra mim                                        12 posts (1.0%)
+      A Gazeta Petista                                     11 posts (1.0%)
+
+-- orientation distribution (replicates paper Table 2) --
+shape: (3, 3)
+┌──────────────┬───────┬───────┐
+│ content_side ┆ count ┆ pct   │
+│ ---          ┆ ---   ┆ ---   │
+│ str          ┆ u32   ┆ f64   │
+╞══════════════╪═══════╪═══════╡
+│ Left         ┆ 2420  ┆ 52.79 │
+│ Center       ┆ 1443  ┆ 31.48 │
+│ Right        ┆ 721   ┆ 15.73 │
+└──────────────┴───────┴───────┘
+shape: (3, 3)
+┌────────────────┬───────┬───────┐
+│ publisher_side ┆ count ┆ pct   │
+│ ---            ┆ ---   ┆ ---   │
+│ str            ┆ u32   ┆ f64   │
+╞════════════════╪═══════╪═══════╡
+│ Left           ┆ 678   ┆ 54.55 │
+│ Right          ┆ 322   ┆ 25.91 │
+│ Center         ┆ 243   ┆ 19.55 │
+└────────────────┴───────┴───────┘
+
+==============================================================================
+Q4 - FACE VALIDITY OF THE PUBLISHER BIAS SCORE
+==============================================================================
+
+frame: 117 publishers with >= 15 links in their sharing history
+coded by the protocol: 66   not identifiable: 51
+
+exact three-way agreement : 62/66 = 93.9%
+sign reversals (L<->R)    : 0
+
+sensitivity to the one hand exclusion (NAME_COLLISIONS):
+   with the exclusion    : 62/66 = 93.9%   sign reversals 0
+   without the exclusion : 62/67 = 92.5%   sign reversals 1
+   (1 page(s) re-enter; the headline 'no sign reversal' depends on this)
+   -> Movimento Brasil LIVRE E SOBERANO-Rede Interna   would be coded Right  vs b_p=-0.833 -> Left
+Spearman(manual, b_p)     : rho = 0.897 (p = 2.32e-24)
+Kendall tau-b(manual, b_p): tau = 0.770 (p = 2.74e-15)
+Pearson (manual, b_p)     : r   = 0.965
+Cohen's kappa             : 0.896   (linearly weighted: 0.933)
+
+confusion matrix (rows = manual coding, columns = b_p at the +/-0.3 cut)
+                Left    Center     Right
+      Left        36         0         0
+    Center         1         8         2
+     Right         0         1        18
+
+mean b_p by manual label
+   Left    n= 36  mean=-0.780  sd=0.116  range=[-0.991, -0.541]
+   Center  n= 11  mean=-0.013  sd=0.255  range=[-0.536, +0.409]
+   Right   n= 19  mean=+0.527  sd=0.152  range=[+0.152, +0.740]
+
+by tier
+   Tier 1 (actor)     35/36 = 97.2%
+   Tier 1 (media)     15/18 = 83.3%
+   Tier 2 (avowed)    12/12 = 100.0%
+
+restricted to the 55 publishers coded Left or Right:
+   exact agreement  : 54/55 = 98.2%
+   correct side of 0: 55/55 = 100.0%
+   sign reversals   : 0
+
+disagreements
+   O Globo                                          manual=Center  b_p=-0.536 -> Left    (30 links)
+   Sergio Moro 🇧🇷                                   manual=Right   b_p=+0.152 -> Center  (27 links)
+   iG                                               manual=Center  b_p=+0.320 -> Right   (41 links)
+   BBC News Brasil                                  manual=Center  b_p=+0.409 -> Right   (29 links)
+
+==============================================================================
+PREMISE CHECKS - are the two proposed confounders related as the reviewer expects?
+==============================================================================
+
+(i) 'a wider audience makes different reactions more likely'
+    Spearman(log total reactions, CI)       = -0.084 (p = 1.09e-08)
+    Spearman(log total reactions, f_neg)    = +0.082
+    -> correct in direction: bigger audiences are more heterogeneous, and the
+       association is weak (|rho| = 0.084).
+    median CI by decile of total reactions:
+      D1  median reactions       57   median CI 0.941   median f_neg 0.029   n=459
+      D2  median reactions       79   median CI 0.912   median f_neg 0.045   n=458
+      D3  median reactions      109   median CI 0.912   median f_neg 0.044   n=459
+      D4  median reactions      159   median CI 0.933   median f_neg 0.034   n=458
+      D5  median reactions      233   median CI 0.868   median f_neg 0.066   n=458
+      D6  median reactions      358   median CI 0.919   median f_neg 0.041   n=459
+      D7  median reactions      622   median CI 0.903   median f_neg 0.048   n=458
+      D8  median reactions     1169   median CI 0.884   median f_neg 0.058   n=459
+      D9  median reactions     2776   median CI 0.927   median f_neg 0.036   n=458
+      D10 median reactions     9448   median CI 0.918   median f_neg 0.041   n=458
+
+(ii) 'an author who shared only one link cannot be misaligned'
+    Spearman(log links shared by author, Delta_b) = -0.071 (p = 1.64e-06)
+    size of the sharing history b_p is estimated from:
+      per PUBLISHER: mean 7.3 links, median 3, max 288
+      per POST     : mean 57.8 links, median 14
+      posts from publishers with fewer than 5 links: 1172 (25.6% of the sample)
+    publishers with a single link in their history: 364/1243 (29.3%), contributing 371 posts (8.1% of the sample)
+    Delta_b and |b_p| by size of the sharing history:
+      history = >20   n= 2015   mean Delta_b 0.346   mean |b_p| 0.470   mean CI 0.765
+      history = 6-20  n= 1209   mean Delta_b 0.350   mean |b_p| 0.672   mean CI 0.752
+      history = 3-5   n=  692   mean Delta_b 0.401   mean |b_p| 0.681   mean CI 0.777
+      history = 1     n=  371   mean Delta_b 0.329   mean |b_p| 0.712   mean CI 0.751
+      history = 2     n=  297   mean Delta_b 0.430   mean |b_p| 0.670   mean CI 0.802
+    NOTE the direction of the artefact. With one shared link the estimator
+    returns b_p in {-1, 0, +1} by construction, so such publishers are pinned
+    to the extremes of the scale rather than to zero discrepancy:
+      among single-link publishers, |b_p| = 1 for 71.2% of posts and b_p = 0 for 28.8%
+    This is why model A5 re-estimates the model without them.
+
+(iii) how the two proposed controls relate to each other and to the outcome
+    Spearman(log total reactions, log author links) = +0.370
+    Spearman(log total reactions, Delta_b)          = -0.029
+    Spearman(log author links, CI)                  = -0.083
+    -> the two controls are moderately correlated with each other; the
+       collinearity that matters for the fit is reported as VIF in models.txt.
+
+==============================================================================
+CI BY BIN OF THE REACTION SCORE - how well is the negative end sampled?
+==============================================================================
+RS bin              n   mean CI   median CI
+posts whose RS falls exactly on a decile boundary: 170 (left-closed bins [lo, hi), matching 05_figures.R)
+[0.0,0.1)         1     0.925       0.925
+[0.1,0.2)      0         -           -
+[0.2,0.3)        26     0.234       0.172
+[0.3,0.4)        26     0.368       0.402
+[0.4,0.5)       184     0.240       0.196
+[0.5,0.6)       161     0.297       0.244
+[0.6,0.7)       288     0.403       0.359
+[0.7,0.8)       361     0.567       0.571
+[0.8,0.9)       771     0.696       0.731
+[0.9,1.0)      2766     0.918       0.979
+
+posts with RS < 0.2: 1  |  RS < 0.3: 27  |  RS < 0.4: 53 (1.2% of the sample)
+Across every bin holding more than 100 posts (RS >= 0.4, 98.8% of the sample) mean CI
+increases monotonically with RS, from 0.24 to 0.92.
+The 3 bin(s) below RS = 0.4 hold 1, 26, 26 posts and are too noisy to order.
+The strongly negative end of RS is too sparse to test for a reversal, so no
+claim is made about it; a smoother fitted there would extrapolate from the
+1 post(s) in the lowest populated bin.
