@@ -110,7 +110,7 @@ This notebook uses `data/data_final.csv` as input and also reads files from `dat
 
 ### `notebooks/beta_model.R`
 
-This R script fits the mixed beta regression model used in the final statistical analysis.
+This R script fits the mixed beta regression model used in the originally published analysis.
 
 It:
 
@@ -124,7 +124,7 @@ It:
   - `figures/correlation.png`
   - `figures/top_effects.png`
 
-This script is the final modeling step in the repository.
+The final model C is fitted by the reviewer response pipeline described below.
 
 ## Data Folder
 
@@ -140,10 +140,14 @@ The `data/` directory contains both intermediate and final files. Based on the c
 
 ## Figures Folder
 
-The `figures/` folder stores exported outputs from `notebooks/beta_model.R`:
+The `figures/` folder keeps both versions of the manuscript's Fig 6:
 
-- `figures/correlation.png`
-- `figures/top_effects.png`
+| Model | Script | Figures |
+|---|---|---|
+| Originally published specification (A0) | `notebooks/beta_model.R` | `figures/correlation.png`, `figures/top_effects.png` |
+| Final model C, used in the manuscript's main table | `rebuttal/scripts/10_publisher_random_effects.R` | `figures/model_C/correlation.png`, `figures/model_C/top_effects.png` |
+
+The model C script reads `models$C` from `rebuttal/results/models.rds` and saves its figures in the `model_C/` subfolder.
 
 The figures of the reviewer response live separately, in `rebuttal/figures/`.
 
@@ -261,7 +265,7 @@ The written response is `rebuttal/REVIEWER_RESPONSE.md`; its Reproducibility app
 
 ### Layout
 
-- `rebuttal/scripts/`: the nine pipeline steps, plus `_common.R` (shared repository root, topic list, random-effect structure and final model formula) and `thresholds.txt` (the sharing-history ladder, read by both the R and the Python side).
+- `rebuttal/scripts/`: the ten pipeline steps, plus `_common.R` (shared repository root, topic list, random-effect structure and final model formula) and `thresholds.txt` (the sharing-history ladder, read by both the R and the Python side).
 - `rebuttal/data/`: the rebuilt `analysis_dataset.csv`, the rule-based `publisher_labels.csv`, and `post_timestamps.csv` with its own README.
 - `rebuttal/results/`: every table and text output the document cites.
 - `rebuttal/figures/`: the figures, as composites and as individual panels.
@@ -279,6 +283,7 @@ The written response is `rebuttal/REVIEWER_RESPONSE.md`; its Reproducibility app
 | 7 | `07_bp_reliability.py` | `results/bp_reliability.txt`, `bp_reliability.csv`, `threshold_composition.csv` |
 | 8 | `08_threshold_models.R` | `results/threshold_models.txt` and `.csv`, `figures/fig7*` |
 | 9 | `09_negativity_outcome.R` | `results/negativity_models.txt` and `.csv`, `negativity_fit.csv`, `negativity_random_effects.csv`, `figures/fig8*` |
+| 10 | `10_publisher_random_effects.R` | `results/publisher_random_effects.txt`, `publisher_random_effects_C.csv`, `../figures/model_C/top_effects.png`, `../figures/model_C/correlation.png` |
 
 ### Running it
 
@@ -293,6 +298,7 @@ Rscript rebuttal/scripts/05_figures.R
 uv run python rebuttal/scripts/07_bp_reliability.py
 Rscript rebuttal/scripts/08_threshold_models.R
 Rscript rebuttal/scripts/09_negativity_outcome.R
+Rscript rebuttal/scripts/10_publisher_random_effects.R
 ```
 
 The R side needs:
@@ -308,7 +314,8 @@ install.packages(c(
   "patchwork",
   "glmmTMB",
   "performance",
-  "broom.mixed"
+  "broom.mixed",
+  "ggrepel"
 ))
 ```
 

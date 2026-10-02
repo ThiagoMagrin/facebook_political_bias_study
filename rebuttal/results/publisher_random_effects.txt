@@ -1,0 +1,122 @@
+==============================================================================
+  PUBLISHER RANDOM EFFECTS, FINAL MODEL C (manuscript Fig 6)
+==============================================================================
+
+1243 publishers. rank_high = 1 is the highest intercept, rank_low = 1 the lowest,
+rank_abs = 1 the largest |intercept|. Intercepts are deviations from the global
+mean on the logit scale.
+
+-- Fig 6a: the 10 largest |intercept| (what figures/model_C/top_effects.png shows) --
+               account_name Intercept    se Slope_Toxicity rank_high rank_low
+ Liga Cristã Mundial Brasil     0.873 0.262          0.241         1     1243
+          Jovens de Direita     0.795 0.249          0.450         2     1242
+     ESPERANÇA EM LULA 2023     0.573 0.264          0.285         3     1241
+           CartaCapitalista     0.562 0.246          0.238         4     1240
+          Jair M. Bolsonaro     0.499 0.300          0.040         5     1239
+   Política com P Maiúsculo     0.479 0.253          0.261         6     1238
+           Quebrando o Tabu    -0.463 0.200         -0.107      1240        4
+           DIREITA RACIONAL    -0.475 0.283         -0.162      1241        3
+           FORA BOLSONARO!!    -0.500 0.192         -0.235      1242        2
+            BBC News Brasil    -0.507 0.187         -0.018      1243        1
+ rank_abs
+        1
+        2
+        3
+        4
+        7
+        8
+       10
+        9
+        6
+        5
+
+-- the 10 highest intercepts (above-average baseline consensus) --
+                                                       account_name Intercept
+                                         Liga Cristã Mundial Brasil     0.873
+                                                  Jovens de Direita     0.795
+                                             ESPERANÇA EM LULA 2023     0.573
+                                                   CartaCapitalista     0.562
+                                                  Jair M. Bolsonaro     0.499
+                                           Política com P Maiúsculo     0.479
+                                               Bolsonaro Maranhense     0.456
+                                                        Eric Valini     0.427
+                                              Botafogo Antifascista     0.423
+ Movimento Brasil LIVRE E SOBERANO-Rede Internacional da Legalidade     0.403
+    se Slope_Toxicity rank_high rank_low rank_abs
+ 0.262          0.241         1     1243        1
+ 0.249          0.450         2     1242        2
+ 0.264          0.285         3     1241        3
+ 0.246          0.238         4     1240        4
+ 0.300          0.040         5     1239        7
+ 0.253          0.261         6     1238        8
+ 0.240          0.247         7     1237       11
+ 0.263          0.143         8     1236       14
+ 0.254          0.211         9     1235       15
+ 0.209          0.188        10     1234       18
+
+-- the 10 lowest intercepts (below-average baseline consensus) --
+                               account_name Intercept    se Slope_Toxicity
+                            BBC News Brasil    -0.507 0.187         -0.018
+                           FORA BOLSONARO!!    -0.500 0.192         -0.235
+                           DIREITA RACIONAL    -0.475 0.283         -0.162
+                           Quebrando o Tabu    -0.463 0.200         -0.107
+        Observatório da Violência Religiosa    -0.445 0.296         -0.030
+ Somos Lulistas, Dilmistas E Petistas Roxos    -0.445 0.273         -0.122
+                       História da Ditadura    -0.417 0.287         -0.047
+                             EL PAÍS Brasil    -0.404 0.268         -0.033
+                                Eliane Brum    -0.402 0.285         -0.170
+                         Grupo Sujeito Raro    -0.402 0.263         -0.266
+ rank_high rank_low rank_abs
+      1243        1        5
+      1242        2        6
+      1241        3        9
+      1240        4       10
+      1239        5       12
+      1238        6       13
+      1237        7       16
+      1236        8       17
+      1235        9       19
+      1234       10       20
+
+-- the examples the manuscript text names --
+model C:
+      account_name Intercept    se Slope_Toxicity rank_high rank_low rank_abs
+ Jair M. Bolsonaro     0.499 0.300          0.040         5     1239        7
+      UOL Notícias    -0.133 0.125          0.072      1119      125      228
+model A0 (published specification, for comparison):
+      account_name Intercept    se Slope_Toxicity rank_high rank_low rank_abs
+ Jair M. Bolsonaro     0.804 0.338         -0.029         2     1242        3
+      UOL Notícias    -0.693 0.105          0.089      1240        4        8
+
+model A0, 10 largest |intercept|, for comparison:
+               account_name Intercept    se Slope_Toxicity rank_high rank_low
+ Liga Cristã Mundial Brasil     1.173 0.286          0.118         1     1243
+          Jair M. Bolsonaro     0.804 0.338         -0.029         2     1242
+          Jovens de Direita     0.773 0.295          0.388         3     1241
+     ESPERANÇA EM LULA 2023     0.745 0.324          0.242         4     1240
+       História da Ditadura    -0.676 0.330          0.011      1238        6
+             EL PAÍS Brasil    -0.684 0.293          0.024      1239        5
+               UOL Notícias    -0.693 0.105          0.089      1240        4
+                     O Povo    -0.708 0.231          0.014      1241        3
+            BBC News Brasil    -0.719 0.181          0.046      1242        2
+           Quebrando o Tabu    -0.856 0.216         -0.070      1243        1
+ rank_abs
+        1
+        3
+        4
+        5
+       10
+        9
+        8
+        7
+        6
+        2
+
+-- intercept-toxicity slope correlation, publishers --
+model C : Pearson r of predicted effects = 0.8123, 95% CI [0.7925, 0.8304], t(1241) = 49.06, p = 7.15e-293
+          rho01 estimated by the model     = 0.4909
+model A0: Pearson r of predicted effects = 0.4870, p = 5.11e-75
+          rho01 estimated by the model     = 0.2096
+
+Fig 6b (figures/model_C/correlation.png) plots, and its title reports, the Pearson r of
+the predicted effects. The main table's rho01 row is the model parameter.
