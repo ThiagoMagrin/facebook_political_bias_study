@@ -1,0 +1,9 @@
+id,specification,N,pages,links
+final,Final model,4584,1243,761
+no_crp,CRP omitted,4584,1243,761
+bp2,At least 2 bias-scored links,4213,879,757
+bp5,At least 5 bias-scored links,3405,415,744
+window,Twitter-window posts only,4099,1100,743
+linkout,Leave-link-out page bias,4213,879,757
+min25,Minimum 25 reactions,5774,1653,772
+min100,Minimum 100 reactions,3558,914,745

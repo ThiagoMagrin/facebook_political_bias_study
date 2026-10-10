@@ -1,0 +1,17 @@
+{
+  "full_bp_max_abs_error": 1.1102230246251565e-16,
+  "alternate50_exact_match": true,
+  "timestamp_unmatched": 0,
+  "twitter_window_N": 4099,
+  "leave_link_out_excluded_posts": 371,
+  "leave_link_out_excluded_pages": 364,
+  "all_center_remaining_posts": 106,
+  "category_rule": "Left <= -0.3; Center -0.3 < b < 0.3; Right >= 0.3",
+  "history_unit": "Post-weighted, full deduplicated corpus",
+  "input_sha256": {
+    "data/data_mongodb.csv": "a251c1d7dbf88644e66a6043138ad078a939d08bd275f2d8f7228bb10d9d2947",
+    "rebuttal/data/analysis_dataset.csv": "bfd6ec21d6b3e22bebf826648f9bfd2a74545144d4ad5f388bee057ddfaca5a6",
+    "rebuttal/data/analysis_dataset_min25.csv": "de2d9a877065d5cba2dad3f2fbe62829b5a247b72bd33c7372790d80827db75f",
+    "rebuttal/data/post_timestamps.csv": "e32215cfddcd212ae75c05f10168e8dca9daf32e3918a8e0c2f6973c93e11c8d"
+  }
+}

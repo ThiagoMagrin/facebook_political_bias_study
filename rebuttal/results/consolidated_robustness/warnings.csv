@@ -1,0 +1,9 @@
+id,warning
+final,R2: Model's distribution-specific variance is negative. Results are not reliable.
+no_crp,R2: Model's distribution-specific variance is negative. Results are not reliable.
+bp2,R2: Model's distribution-specific variance is negative. Results are not reliable.
+bp5,R2: Model's distribution-specific variance is negative. Results are not reliable.
+window,R2: Model's distribution-specific variance is negative. Results are not reliable.
+linkout,R2: Model's distribution-specific variance is negative. Results are not reliable.
+min25,R2: Model's distribution-specific variance is negative. Results are not reliable.
+min100,R2: Model's distribution-specific variance is negative. Results are not reliable.

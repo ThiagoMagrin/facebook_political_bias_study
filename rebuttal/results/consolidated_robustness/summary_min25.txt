@@ -1,0 +1,47 @@
+ Family: beta  ( logit )
+Formula:          ci ~ content_leaning + content_extremity + publisher_leaning +  
+    publisher_extremity + rph_delta + toxicity + reaction_score +  
+    log_total_reactions + log_author_links + Economy + Education +  
+    Health + Security + Culture + Religion + Disinformation +  
+    Election + Politics + Corruption + (toxicity | account_name) +      (toxicity | collection_name)
+Data: ds
+
+     AIC      BIC   logLik deviance df.resid 
+-20900.1 -20720.2  10477.0 -20954.1     5747 
+
+Random effects:
+
+Conditional model:
+ Groups          Name        Variance Std.Dev. Corr  
+ account_name    (Intercept) 0.05717  0.2391         
+                 toxicity    0.02798  0.1673   0.77  
+ collection_name (Intercept) 0.16183  0.4023         
+                 toxicity    0.03405  0.1845   -0.14 
+Number of obs: 5774, groups:  account_name, 1653; collection_name, 772
+
+Dispersion parameter for beta family (): 2.84 
+
+Conditional model:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)          1.50850    0.03130   48.20  < 2e-16 ***
+content_leaning      0.12288    0.03701    3.32 0.000899 ***
+content_extremity    0.04578    0.03357    1.36 0.172631    
+publisher_leaning    0.09166    0.02562    3.58 0.000346 ***
+publisher_extremity  0.08249    0.02307    3.58 0.000350 ***
+rph_delta           -0.17053    0.01800   -9.47  < 2e-16 ***
+toxicity            -0.13340    0.02330   -5.72 1.03e-08 ***
+reaction_score       0.91377    0.02933   31.15  < 2e-16 ***
+log_total_reactions -0.17857    0.01945   -9.18  < 2e-16 ***
+log_author_links    -0.06874    0.02251   -3.05 0.002260 ** 
+Economy              0.03249    0.03806    0.85 0.393178    
+Education            0.11255    0.03917    2.87 0.004058 ** 
+Health              -0.09350    0.04520   -2.07 0.038576 *  
+Security             0.04948    0.04968    1.00 0.319265    
+Culture             -0.06652    0.05484   -1.21 0.225155    
+Religion            -0.02250    0.03923   -0.57 0.566221    
+Disinformation      -0.08834    0.04558   -1.94 0.052596 .  
+Election            -0.03525    0.04771   -0.74 0.459990    
+Politics             0.08411    0.05373    1.57 0.117481    
+Corruption           0.03651    0.05048    0.72 0.469580    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1

@@ -1,0 +1,71 @@
+We next assessed the sensitivity of the key associations while retaining
+the final mixed beta specification as the reference model.
+Table~\ref{tab:robustness_final} reports standardized coefficients for Bias
+Discrepancy and Toxicity after omitting Content Reaction Positivity,
+restricting pages by the number of distinct bias-scored links in their
+observed sharing histories, restricting posts to the Twitter collection
+window (October 1--December 11, 2018), reconstructing page bias without the
+focal link, and varying the minimum-reaction criterion.
+
+For the sharing-history restrictions, we counted only distinct links with
+available ideological scores, which are the links that contribute to $b_p$.
+The page-activity control retained its original definition based on all
+distinct shared links. In the leave-link-out analysis, we removed all posts
+by a page sharing the focal news link from that page's full observed history,
+then recalculated page leaning, page extremity, and Bias Discrepancy together.
+This excluded 371 posts from pages with no remaining bias-scored history,
+leaving 4,213 posts; an all-centrist remaining history was assigned $b_p=0$,
+consistent with the original calculation. Other predictors retained their
+original definitions. The 25-reaction sample was rebuilt from the source
+data using the same preprocessing and metric-construction procedures before
+applying the lower engagement cutoff. In every fitted sample, continuous
+predictors were standardized and the boundary adjustment of $RHI$ was
+recomputed using that sample's size.
+
+\begin{table}[htb]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Sensitivity analyses using the final mixed beta model for the
+Reaction Homogeneity Index. Except for the stated modification, each model
+retains the fixed- and random-effects specification in
+Table~\ref{tab:beta_results}. Continuous predictors are standardized within
+each fitted sample. Coefficients are on the logit scale and intervals are
+two-sided 95\% Wald confidence intervals.}
+\label{tab:robustness_final}
+\begin{tabular}{p{3.7cm}ccccc}
+\toprule
+\textbf{Specification} & $\beta_{\Delta_b}$ & \textbf{95\% CI}
+& $\beta_{\mathrm{Tox}}$ & \textbf{95\% CI} & \textbf{N} \\
+\midrule
+Final model & $-0.173$ & $[-0.211, -0.135]$ & $-0.149$ & $[-0.196, -0.102]$ & 4,584 \\
+CRP omitted & $-0.178$ & $[-0.219, -0.138]$ & $-0.133$ & $[-0.180, -0.086]$ & 4,584 \\
+Pages with $\geq 2$ bias-scored links & $-0.201$ & $[-0.241, -0.160]$ & $-0.162$ & $[-0.211, -0.113]$ & 4,213 \\
+Pages with $\geq 5$ bias-scored links & $-0.219$ & $[-0.264, -0.175]$ & $-0.170$ & $[-0.226, -0.113]$ & 3,405 \\
+Twitter-window posts only & $-0.173$ & $[-0.214, -0.132]$ & $-0.144$ & $[-0.192, -0.096]$ & 4,099 \\
+Leave-link-out page bias & $-0.192$ & $[-0.234, -0.150]$ & $-0.165$ & $[-0.214, -0.116]$ & 4,213 \\
+Minimum 25 reactions & $-0.171$ & $[-0.206, -0.135]$ & $-0.133$ & $[-0.179, -0.088]$ & 5,774 \\
+Minimum 100 reactions & $-0.167$ & $[-0.209, -0.126]$ & $-0.177$ & $[-0.229, -0.126]$ & 3,558 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Across all eight specifications, Bias Discrepancy and Toxicity had
+negative coefficients, with all 95\% confidence intervals excluding zero.
+The Bias Discrepancy association persisted after removing the focal link
+from the page-bias calculation, after restricting the sample to posts
+within the Twitter measurement window, and under alternative engagement
+cutoffs. These checks support the robustness of the reported association
+to these specific analytical choices. They do not remove the limitations
+of estimating page ideology from observed sharing behavior or establish a
+causal effect. Because standardization was performed within each sample,
+coefficient magnitudes reflect the predictor distributions in those samples.
+
+Omitting $CRP$ from the final specification reduced marginal $R^2$
+from $0.762$ to $0.154$, while conditional
+$R^2$ remained similar ($0.977$ versus $0.979$).
+Marginal and conditional $R^2$ were calculated using the Nakagawa
+method implemented in \texttt{performance::r2\_nakagawa()}, with the
+lognormal approximation. This indicates that $CRP$ accounts for substantial
+fixed-effect variation, while the Bias Discrepancy association persists
+when this same-link reaction covariate is omitted.

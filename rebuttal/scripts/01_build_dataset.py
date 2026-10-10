@@ -12,7 +12,8 @@ notebooks/data_collection.py, and adds the variables required by the reviewers:
   * categorical orientation    -> Left / Center / Right
   * discrepancy quartiles      -> Very Low / Low / High / Very High
 
-Output: rebuttal/data/analysis_dataset.csv
+Output: rebuttal/data/analysis_dataset.csv (default >=50 reactions), or
+analysis_dataset_minN.csv when MIN_REACTIONS is set to an alternative cutoff.
 """
 import os
 import polars as pl
@@ -27,6 +28,10 @@ DATA = ROOT / "data"
 OUT = ROOT / "rebuttal" / "data"
 OUT.mkdir(parents=True, exist_ok=True)
 
+MIN_REACTIONS = int(os.environ.get("MIN_REACTIONS", "50"))
+assert MIN_REACTIONS >= 1, "MIN_REACTIONS must be a positive integer"
+OUTPUT_NAME = "analysis_dataset.csv" if MIN_REACTIONS == 50 else f"analysis_dataset_min{MIN_REACTIONS}.csv"
+LOG_NAME = "build_log.txt" if MIN_REACTIONS == 50 else f"build_log_min{MIN_REACTIONS}.txt"
 EPS = 1e-6
 
 RES = ROOT / "rebuttal" / "results"
@@ -205,10 +210,11 @@ df = df.filter(~(
     | pl.col("link").str.contains(r"https://redetv\.uol\.com\.br/aovivo")
 ))
 say(f"[4] after excluding the five hand-listed domains: {df.height}")
-df = df.filter(pl.col("totalReactions") >= 50)
-say(f"[5] final analytical sample (paper Table 1, step 4): {df.height}")
-say(f"      of the {_only50} posts the >= 50 cut alone leaves, "
-      f"the domain exclusion removes {_only50 - df.height}")
+df = df.filter(pl.col("totalReactions") >= MIN_REACTIONS)
+say(f"[5] analytical sample with >= {MIN_REACTIONS} reactions: {df.height}")
+if MIN_REACTIONS == 50:
+    say(f"      of the {_only50} posts the >= 50 cut alone leaves, "
+        f"the domain exclusion removes {_only50 - df.height}")
 
 # ============================== REVIEWER-REQUESTED DERIVED VARIABLES ==========
 df = df.with_columns([
@@ -272,34 +278,37 @@ sample_activity = df.group_by("account_name").agg(
 df = df.join(sample_activity, on="account_name", how="left")
 
 # ============================== VALIDATION AGAINST data_final.csv =============
-ref = pl.read_csv(DATA / "data_final.csv")
-say("\n--- reproduction check against data/data_final.csv ---")
-say(f"reference rows: {ref.height} | rebuilt rows: {df.height}")
-assert ref.height == df.height, f"row count differs: {ref.height} vs {df.height}"
+if MIN_REACTIONS == 50:
+    ref = pl.read_csv(DATA / "data_final.csv")
+    say("\n--- reproduction check against data/data_final.csv ---")
+    say(f"reference rows: {ref.height} | rebuilt rows: {df.height}")
+    assert ref.height == df.height, f"row count differs: {ref.height} vs {df.height}"
 
-# data_final.csv has no unique row key -- (collection_name, account_name, link)
-# repeats for publishers that shared the same link more than once -- so rows are
-# matched by sorting BOTH frames on every shared column. Comparing each column's
-# sorted values separately would only prove the marginals agree, which is weaker:
-# it would pass even if the values were reshuffled across rows.
-shared = [c for c in ref.columns if c in df.columns]
-key = [c for c in shared if ref[c].dtype == pl.String]
-num = [c for c in shared if c not in key]
-ref_s = ref.select(shared).sort(shared)
-df_s = df.select(shared).sort(shared)
+    # data_final.csv has no unique row key -- (collection_name, account_name, link)
+    # repeats for publishers that shared the same link more than once -- so rows are
+    # matched by sorting BOTH frames on every shared column. Comparing each column's
+    # sorted values separately would only prove the marginals agree, which is weaker:
+    # it would pass even if the values were reshuffled across rows.
+    shared = [c for c in ref.columns if c in df.columns]
+    key = [c for c in shared if ref[c].dtype == pl.String]
+    num = [c for c in shared if c not in key]
+    ref_s = ref.select(shared).sort(shared)
+    df_s = df.select(shared).sort(shared)
 
-for c in key:
-    assert ref_s[c].to_list() == df_s[c].to_list(), f"row-aligned mismatch in {c}"
-max_dev = 0.0
-for c in num:
-    dev = float((ref_s[c] - df_s[c]).abs().max())
-    max_dev = max(max_dev, dev)
-    assert dev < 1e-9, f"row-aligned mismatch in {c}: max |diff| = {dev}"
-say(f"  rows match as a multiset over all {len(shared)} shared columns")
-say(f"  {len(key)} text columns identical after row alignment")
-say(f"  {len(num)} numeric columns agree to max |diff| = {max_dev:.2e}")
-say(f"  n publishers  reference={ref['account_name'].n_unique()} rebuilt={df['account_name'].n_unique()}")
-say(f"  n content     reference={ref['collection_name'].n_unique()} rebuilt={df['collection_name'].n_unique()}")
+    for c in key:
+        assert ref_s[c].to_list() == df_s[c].to_list(), f"row-aligned mismatch in {c}"
+    max_dev = 0.0
+    for c in num:
+        dev = float((ref_s[c] - df_s[c]).abs().max())
+        max_dev = max(max_dev, dev)
+        assert dev < 1e-9, f"row-aligned mismatch in {c}: max |diff| = {dev}"
+    say(f"  rows match as a multiset over all {len(shared)} shared columns")
+    say(f"  {len(key)} text columns identical after row alignment")
+    say(f"  {len(num)} numeric columns agree to max |diff| = {max_dev:.2e}")
+    say(f"  n publishers  reference={ref['account_name'].n_unique()} rebuilt={df['account_name'].n_unique()}")
+    say(f"  n content     reference={ref['collection_name'].n_unique()} rebuilt={df['collection_name'].n_unique()}")
+else:
+    say("Alternate cutoff: published-sample validation applies only to cutoff 50.")
 
 keep = [
     "collection_name", "link", "account_name", "post_text",
@@ -320,8 +329,8 @@ keep = [
     "Economy", "Education", "Health", "Security", "Culture", "Religion",
     "Disinformation", "Election", "Politics", "Corruption",
 ]
-df.select(keep).write_csv(OUT / "analysis_dataset.csv")
-say(f"\nwritten: {OUT / 'analysis_dataset.csv'}  ({df.height} rows)")
+df.select(keep).write_csv(OUT / OUTPUT_NAME)
+say(f"\nwritten: {OUT / OUTPUT_NAME}  ({df.height} rows)")
 
-(RES / "build_log.txt").write_text("\n".join(_log) + "\n", encoding="utf-8")
-print(f"written: {RES / 'build_log.txt'}")
+(RES / LOG_NAME).write_text("\n".join(_log) + "\n", encoding="utf-8")
+print(f"written: {RES / LOG_NAME}")
